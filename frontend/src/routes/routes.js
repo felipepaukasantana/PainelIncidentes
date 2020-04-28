@@ -7,6 +7,7 @@ import Base from '../views/base/index';
 import Cawa from '../views/cawa/index';
 import Violacoes from '../views/violacoes/index';
 import Pendencias from '../views/pendencias/index';
+import Plantao from '../views/plantao/index';
 
 export default function Routes() {
   return (
@@ -17,6 +18,7 @@ export default function Routes() {
       <Route path="/cawa" component={Cawa} />
       <Route path="/violacoes" component={Violacoes} />
       <Route path="/pendencias" component={Pendencias} />
+      <Route path="/plantao" component={Plantao} />
     </BrowserRouter>
   );
 }

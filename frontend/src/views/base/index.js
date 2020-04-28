@@ -20,7 +20,8 @@ import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import WarningIcon from '@material-ui/icons/Warning';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import TodayIcon from '@material-ui/icons/Today';
-import { Link } from '@material-ui/core';
+import Brightness2Icon from '@material-ui/icons/Brightness2';
+import { Link, TextField } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -86,13 +87,13 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     color: '#FFFFFF'
-  }
+  },  
 }));
 
 export default function MiniDrawer({ history }) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const menuItems = [
     {
@@ -112,7 +113,7 @@ export default function MiniDrawer({ history }) {
       label: 'Recursos',
       rota: '/recursos',
       icon: <SupervisedUserCircleIcon />
-    },    
+    },
     {
       id: 4,
       label: 'Violações',
@@ -124,6 +125,12 @@ export default function MiniDrawer({ history }) {
       label: 'Pendências',
       rota: '/pendencias',
       icon: <PlaylistAddIcon />,
+    },
+    {
+      id: 6,
+      label: 'Plantão',
+      rota: '/plantao',
+      icon: <Brightness2Icon />,
     }
   ];
 
@@ -160,6 +167,7 @@ export default function MiniDrawer({ history }) {
           <Typography variant="h6" noWrap className={classes.title}>
             Incidentes SLA - AMS Porto Seguro Saúde
           </Typography>
+
         </Toolbar>
       </AppBar>
       <Drawer
@@ -182,13 +190,13 @@ export default function MiniDrawer({ history }) {
         </div>
         <Divider />
         <List>
-          {menuItems.map((item) => (            
-              <ListItem button key={item.id} component={Link} href={item.rota}>
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItem>            
+          {menuItems.map((item) => (
+            <ListItem button key={item.id} component={Link} href={item.rota}>
+              <ListItemIcon>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItem>
           ))}
         </List>
         <Divider />

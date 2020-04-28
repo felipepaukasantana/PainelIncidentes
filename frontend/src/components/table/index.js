@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
+import { format } from 'date-fns';
+
 import ChipSeveridade from "../../views/chip/chipSeveridade";
 
 const useStyles = makeStyles({
@@ -28,29 +30,31 @@ const useStyles = makeStyles({
         textAlign: "center",
         background: "linear-gradient(45deg, #00cc66 30%, #00ccff 90%)",
     },
-    cardRecurso: {
-        width: "100%",
-        height: "1x",
-        borderBottom: "0",
-    },
 });
+
+const tratarDataNula = (data) => {
+    var dataTratada = "";
+    if (data !== null) {
+        dataTratada = format(new Date(data.$date), 'dd/MM/yyyy HH:mm:ss');
+    }
+    return dataTratada;
+}
 
 export default function Tabela(props) {
     const classes = useStyles();
     const { colunas, dados, titulo } = props
-    
+
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12} >
-                <div>
-                    <Card >
-                        <CardContent className={classes.card}>
-                            <Typography className={classes.title} variant="h6" component="div">
-                                {titulo}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </div>
+        <div><Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+                <Card >
+                    <CardContent className={classes.card}>
+                        <Typography className={classes.title} variant="h6" component="div">
+                            {titulo}
+                        </Typography>
+                    </CardContent>
+                </Card>
+
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead>
@@ -60,20 +64,20 @@ export default function Tabela(props) {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        <TableBody>
+                        <TableBody width="100%">
                             {dados.map((dado, index) => (
                                 <TableRow key={index}>
-                                    <TableCell component="th" scope="row" width="1px">
+                                    <TableCell component="th" scope="row" width="5%">
                                         {dado.numero}
                                     </TableCell>
-                                    <TableCell align="left" width="1px">{dado.status}</TableCell>
-                                    <TableCell align="left" width="150px">{dado.data_abertura}</TableCell>
-                                    <TableCell align="left" width="150px">
-                                        <ChipSeveridade  severidade={dado.severidade}/>
+                                    <TableCell align="left" width="5%">{dado.status}</TableCell>
+                                    <TableCell align="left" width="10%">{tratarDataNula(dado.data_abertura)}</TableCell>
+                                    <TableCell align="left" width="10%">
+                                        <ChipSeveridade severidade={dado.severidade} />
                                     </TableCell>
-                                    <TableCell align="left" width="150px">{dado.violacao_projetada}</TableCell>
-                                    <TableCell align="left" width="150px">{dado.responsavel}</TableCell>
-                                    <TableCell align="left">{dado.resumo}</TableCell>
+                                    <TableCell align="left" width="10%">{tratarDataNula(dado.violacao_projetada)}</TableCell>
+                                    <TableCell align="left" width="10%">{dado.responsavel}</TableCell>
+                                    <TableCell align="left" width="50%">{dado.resumo.substring(0, 100)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -81,5 +85,6 @@ export default function Tabela(props) {
                 </TableContainer>
             </Grid>
         </Grid>
+        </div>
     );
 }

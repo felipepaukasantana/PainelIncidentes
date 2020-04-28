@@ -29,7 +29,7 @@ export default function ChipSeveridade(props) {
             setChipState({
                 icon: SeveridadeHelper.retornarIcon(severidade),
                 classe: SeveridadeHelper.retornarClasse(severidade, classes),
-                severidade: severidade,
+                severidade: SeveridadeHelper.retornarDescricao(severidade),
             });
         }
         preencherDadosChip();

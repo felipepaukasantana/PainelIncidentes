@@ -1,10 +1,10 @@
 var fs = require("fs");
 var dateFns = require('date-fns');
-const brasilLocale = require('date-fns/locale/pt');
-var moment = require('moment');
 var sortJsonArray = require('sort-json-array');
+const Incidente = require('../model/Incidente');
 
 var jsonData = [];
+var cawa = [];
 
 const STATUS = {
     ABERTO: "Aberto",
@@ -17,20 +17,22 @@ const STATUS = {
     JOB: "Aguardando execução de JOB",
 };
 
-fs.readFile("C:\\Users\\1639646\\source\\incidentes\\api\\src\\controllers\\retorno.json", "utf8", function (err, data) {
+fs.readFile("C:\\Users\\1639646\\source\\painelincidentes\\api\\src\\controllers\\retorno.json", "utf8", function (err, data) {
     if (err) {
         return console.log(err.message);
     }
     jsonData = JSON.parse(data);
+    cawa = filtrarCawa();
 });
 
 const filtrarPorData = (data, hoje) => {
-    return (dateFns.format(new Date(moment(data, 'DD/MM/YYYY')), 'dd/MM/yyyy') === dateFns.format(hoje, 'dd/MM/yyyy'))
+    return (dateFns.format(new Date(data), 'dd/MM/yyyy') === dateFns.format(hoje, 'dd/MM/yyyy'))
 }
 
 const filtrarPorIntervaloData = (dataRefrencia, dataInicial, dataFinal) => {
-    var dataFormatada = dateFns.format(new Date(moment(dataRefrencia, 'DD/MM/YYYY')), 'dd/MM/yyyy');
-    return (dataFormatada >= dataInicial && dataFormatada <= dataFinal);
+    var dataFormatada = dateFns.format(new Date(dataRefrencia), 'dd/MM/yyyy');
+
+    return ((dataFormatada >= dataInicial) && (dataFormatada <= dataFinal));
 }
 
 const filtrarPorStatus = (statusIncidente, status) => {
@@ -48,7 +50,48 @@ const carregarBacklog = () => {
     return backlog;
 }
 
+const filtrarCawa = () => {
+    return jsonData.filter(function (inc) {
+        return (inc.usuario_final_afetado === "CAWA");
+    });
+}
+
 module.exports = {
+    async inserir(req, res) {
+        const { numero, resumo, severidade, status, grupo_executor, responsavel, violacao_projetada,
+             violado, localidade, data_abertura, ultima_atualizacao, retorno_chamado, classificacao_final,
+              data_resolucao, descricao, usuario_final_afetado, departamento, problema_vinculado, incidente_pai, 
+              causado_pela_rdm, origem, ticket_sis_ext } = req.body;
+
+        //const violacao = new Date(violacao_projetada);    
+
+        const post = await Incidente.create({
+            numero,
+            resumo,
+            severidade,
+            status,
+            grupo_executor,
+            responsavel,
+            violacao_projetada,
+            violado,
+            localidade,
+            data_abertura,
+            ultima_atualizacao,
+            retorno_chamado,
+            classificacao_final,
+            data_resolucao,
+            descricao,
+            usuario_final_afetado,
+            departamento,
+            problema_vinculado,
+            incidente_pai,
+            causado_pela_rdm,
+            origem,
+            ticket_sis_ext
+        });
+
+        console.log(post);
+    },
     listarTodos(req, res) {
         res.send(jsonData);
     },
@@ -64,7 +107,7 @@ module.exports = {
     },
     carregarDadosPendencias(res, req) {
         const pendencias = jsonData.filter(function (inc) {
-            return (inc.responsavel === 'THAIGO MORENO DE OLIVEIRA' && inc.status === STATUS.ATENDIMENTO);
+            return (inc.responsavel === 'THIAGO MORENO DE OLIVEIRA' && inc.status === STATUS.ATENDIMENTO);
         });
         req.send(sortJsonArray(pendencias, 'violacao_projetada', 'asc'));
     },
@@ -72,24 +115,63 @@ module.exports = {
         const triagem = jsonData.filter(function (inc) {
             return ((inc.responsavel.length === 0)
                 || (inc.responsavel === 'DANIEL FARIA MUNIZ'
-                && (inc.status === STATUS.ABERTO 
-                    || inc.status === STATUS.ATENDIMENTO
-                    || inc.status === STATUS.JOB
-                    || inc.status === STATUS.CLIENTE)));
+                    && (inc.status === STATUS.ABERTO
+                        || inc.status === STATUS.ATENDIMENTO
+                        || inc.status === STATUS.JOB
+                        || inc.status === STATUS.CLIENTE)));
         });
-        req.send(sortJsonArray(triagem, 'violacao_projetada', 'asc'));
+        req.send(sortJsonArray(triagem, 'violacao_projetada.$date', 'asc'));
     },
-    carregarDadosDashboard(req, res) {
+    carregarDadosCawa(res, req) {
+        var hoje = new Date();
+
+        const abertosHoje = cawa.filter(function (inc) {
+            return filtrarPorData(inc.data_abertura.$date, hoje);
+        });
+
+        const fechadosHoje = cawa.filter(function (inc) {
+            if (inc.data_resolucao !== null) {
+                return filtrarPorData(inc.data_resolucao.$date, hoje);
+            }
+        });
+
+        const primeiroDia = dateFns.format(dateFns.startOfMonth(hoje), 'dd/MM/yyyy');
+        const ultimoDia = dateFns.format(dateFns.lastDayOfMonth(hoje), 'dd/MM/yyyy');
+
+        const abertosMes = cawa.filter(function (inc) {
+            return filtrarPorIntervaloData(inc.data_abertura.$date, primeiroDia, ultimoDia);
+        });
+
+        const fechadosMes = cawa.filter(function (inc) {            
+            if (inc.data_resolucao !== null) {
+                return filtrarPorIntervaloData(inc.data_resolucao.$date, primeiroDia, ultimoDia);
+            }
+        });
+
+        const dadosCawa = {
+            abertos: abertosHoje.length,
+            fechados: fechadosHoje.length,
+            abertosMes: abertosMes.length,
+            fechadosMes: fechadosMes.length,           
+        };
+        req.send(dadosCawa);
+    },
+    carregarCawa(res, req) {
+        req.send(sortJsonArray(cawa.filter(function (inc) {
+            return (inc.status === STATUS.ABERTO || inc.status === STATUS.ATENDIMENTO);
+        })), "violacao_projetada.$date", 'asc');
+    },
+    carregarDadosDashboard(res, req) {
         const backlog = carregarBacklog();
         var hoje = new Date();
 
         const abertosHoje = jsonData.filter(function (inc) {
-            return filtrarPorData(inc.data_abertura, hoje);
+            return filtrarPorData(inc.data_abertura.$date, hoje);
         });
 
         const fechadosHoje = jsonData.filter(function (inc) {
-            if (inc.data_resolucao !== '') {
-                return filtrarPorData(inc.data_resolucao, hoje);
+            if (inc.data_resolucao !== null) {
+                return filtrarPorData(inc.data_resolucao.$date, hoje);
             }
         });
 
@@ -97,12 +179,12 @@ module.exports = {
         const ultimoDia = dateFns.format(dateFns.lastDayOfMonth(hoje), 'dd/MM/yyyy');
 
         const abertosMes = jsonData.filter(function (inc) {
-            return filtrarPorIntervaloData(inc.data_abertura, primeiroDia, ultimoDia);
+            return filtrarPorIntervaloData(inc.data_abertura.$date, primeiroDia, ultimoDia);
         });
 
-        const fechadosMes = jsonData.filter(function (inc) {
-            if (inc.data_resolucao !== '') {
-                return filtrarPorIntervaloData(inc.data_resolucao, primeiroDia, ultimoDia);
+        const fechadosMes = jsonData.filter(function (inc) {            
+            if (inc.data_resolucao !== null) {
+                return filtrarPorIntervaloData(inc.data_resolucao.$date, primeiroDia, ultimoDia);
             }
         });
 
@@ -139,8 +221,6 @@ module.exports = {
             cliente: cliente.length,
             job: job.length
         };
-
-        console.log(dashBoard + new Date());
-        res.send(dashBoard);
+        req.send(dashBoard);
     }
 };

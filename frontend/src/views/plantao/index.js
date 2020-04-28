@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CardDashBoard from '../cardDashBoard/index';
 import constantes from '../../assets/constantes/constantes';
 import api from '../../api/api';
+import Escala from '../plantao/escala/index'
 
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -13,6 +14,8 @@ import UpdateIcon from '@material-ui/icons/Update';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import DesktopMacIcon from '@material-ui/icons/DesktopMac';
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import PersonIcon from '@material-ui/icons/Person';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -83,63 +86,35 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Dashboard() {
+function Plantao() {
     const classes = useStyles();
     const [dashboardState, setDashboard] = useState({});
-    
+
     useEffect(() => {
         async function carregarDashboard() {
-            api.get("dashboard").then(dash => { 
-                setDashboard(dash.data); 
+            api.get("dashboard").then(dash => {
+                setDashboard(dash.data);
             });
         }
         carregarDashboard();
-    }, []);    
-    
+    }, []);
+
     return (
         <div>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
-                    <CardDashBoard valor={dashboardState.backlog} descricao={constantes.TIPO_CARDS.BACKLOG} icon={<DesktopMacIcon className={classes.icon} />} classe={classes.cardIconBacklog} />
+                    <CardDashBoard valor={"Leandro"} descricao={constantes.TIPO_CARDS.PLANTONISTA} icon={<PersonIcon className={classes.icon} />} classe={classes.cardIconBacklog} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <CardDashBoard valor={dashboardState.sla} descricao={constantes.TIPO_CARDS.SLA} icon={<AssessmentIcon className={classes.icon} />} classe={classes.cardIconSla} />
+                    <CardDashBoard valor={"Felipe"} descricao={constantes.TIPO_CARDS.PROXIMO_PLANTONISTA} icon={<PeopleAltIcon className={classes.icon} />} classe={classes.cardIconSla} />
                 </Grid>
-            </Grid>   
+            </Grid>
             <Grid container spacing={3}>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.abertos} descricao={constantes.TIPO_CARDS.ABERTO} icon={<OpenInNewIcon className={classes.icon} />} classe={classes.cardIconAberto} />
+                <Grid item xs={12} sm={12}>
+                    <Escala /> 
                 </Grid>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.fechados} descricao={constantes.TIPO_CARDS.ABERTOMES} icon={<OpenInNewIcon className={classes.icon} />} classe={classes.cardIconAberto} />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.abertosMes} descricao={constantes.TIPO_CARDS.FECHADO} icon={<CheckBoxIcon className={classes.icon} />} classe={classes.cardIconFechado} />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.fechadosMes} descricao={constantes.TIPO_CARDS.FECHADOMES} icon={<CheckBoxIcon className={classes.icon} />} classe={classes.cardIconFechado} />
-                </Grid>
-            </Grid> 
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.homologacao} descricao={constantes.TIPO_CARDS.HOMOLOGACAO} icon={<UpdateIcon className={classes.icon} />} classe={classes.cardIconHomologacao} />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.rdm} descricao={constantes.TIPO_CARDS.RDM} icon={<AutorenewIcon className={classes.icon} />} classe={classes.cardIconRdm} />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.atendimento} descricao={constantes.TIPO_CARDS.ATENDIMENTO} icon={<BuildIcon className={classes.icon} />} classe={classes.cardIconAtendimento} />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.cliente} descricao={constantes.TIPO_CARDS.CLIENTE} icon={<GroupIcon className={classes.icon} />} classe={classes.cardIconCliente} />
-                </Grid>
-            </Grid>   
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.job} descricao={constantes.TIPO_CARDS.JOB} icon={<UpdateIcon className={classes.icon} />} classe={classes.cardIconHomologacao} />
-                </Grid>
-            </Grid>        
+            </Grid>
         </div>
     );
 }
-export default Dashboard;
+export default Plantao;

@@ -40,6 +40,9 @@ const recursos = [
     {
         nome: "CESAR WILLIAN MOURA GODOI",
     },   
+    {
+        nome: "THIAGO MORENO DE OLIVEIRA",
+    },
 ];
 
 module.exports = {
