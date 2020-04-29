@@ -21,7 +21,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import TodayIcon from '@material-ui/icons/Today';
 import Brightness2Icon from '@material-ui/icons/Brightness2';
-import { Link, TextField } from '@material-ui/core';
+import { Link } from '@material-ui/core';
 
 const drawerWidth = 240;
 

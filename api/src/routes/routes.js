@@ -13,6 +13,7 @@ routes.get('/recursos', RecursoController.listarRecrusos);
 routes.get('/pendencias', IncidenteController.carregarDadosPendencias);
 routes.get('/triagem', IncidenteController.carregarDadosTriagem);
 routes.get('/cawa', IncidenteController.carregarDadosCawa);
+routes.get('/plantonista', IncidenteController.carregarPlantonistas);
 routes.get('/cawa/incidentes', IncidenteController.carregarCawa);
 routes.post('/incidente', IncidenteController.inserir);
 module.exports = routes;

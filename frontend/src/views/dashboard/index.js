@@ -111,10 +111,10 @@ function Dashboard() {
                     <CardDashBoard valor={dashboardState.abertos} descricao={constantes.TIPO_CARDS.ABERTO} icon={<OpenInNewIcon className={classes.icon} />} classe={classes.cardIconAberto} />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.fechados} descricao={constantes.TIPO_CARDS.ABERTOMES} icon={<OpenInNewIcon className={classes.icon} />} classe={classes.cardIconAberto} />
+                    <CardDashBoard valor={dashboardState.abertosMes} descricao={constantes.TIPO_CARDS.ABERTOMES} icon={<OpenInNewIcon className={classes.icon} />} classe={classes.cardIconAberto} />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    <CardDashBoard valor={dashboardState.abertosMes} descricao={constantes.TIPO_CARDS.FECHADO} icon={<CheckBoxIcon className={classes.icon} />} classe={classes.cardIconFechado} />
+                    <CardDashBoard valor={dashboardState.fechados} descricao={constantes.TIPO_CARDS.FECHADO} icon={<CheckBoxIcon className={classes.icon} />} classe={classes.cardIconFechado} />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                     <CardDashBoard valor={dashboardState.fechadosMes} descricao={constantes.TIPO_CARDS.FECHADOMES} icon={<CheckBoxIcon className={classes.icon} />} classe={classes.cardIconFechado} />

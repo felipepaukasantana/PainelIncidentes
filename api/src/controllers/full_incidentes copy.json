@@ -1,0 +1,74 @@
+[
+    {
+        "_id": {
+            "$oid": "5ea8417f3b35864e88a7333a"
+        },
+        "numero": 4188227,
+        "resumo": "Erro  no Apollo - nao consegue visualisar  Anotaçoes Administrativas dos tipos 11 e 12 ",
+        "severidade": 2,
+        "categoria": "Sistemas.Saúde e Odonto.Apollo.Autorizações.Erro.Outros",
+        "status": "Aberto",
+        "grupo_executor": "EQUIPE TCS - TI SAUDE/ODONTO/PORTOMED/FSI",
+        "responsavel": "",
+        "violacao_projetada": {
+            "$date": 1588251577000
+        },
+        "violado": "Não",
+        "localidade": "HOME OFFICE",
+        "data_abertura": {
+            "$date": 1588073157000
+        },
+        "ultima_atualizacao": {
+            "$date": 1588073459000
+        },
+        "retorno_chamado": "",
+        "classificacao_final": "",
+        "data_resolucao": null,
+        "descricao": "Colaboradora entra em contato e reporta que no sistema apollo ao acessar :  Autorizaçoes > Consultar autorizaçoes > faz a pesquisa > na tela da autorizaçao aberta > Opçao anotaçoes administrativas., Nao consegue visualizar as anotaçoes administrativas do tipo 11 e 12 (anotaçoes medicas) . solicita que seja verificado, segue em anexo evidencia  link : http://sistemasaude/autorizacoes/Autorizacoes/Digitacao/Detalhes/58310735?VerificarBloqueio=False ",
+        "usuario_final_afetado": "MONIQUE CAMPELLO MENEZES",
+        "departamento": "PSA - CASE - 010011845",
+        "problema_vinculado": null,
+        "incidente_pai": null,
+        "causado_pela_rdm": null,
+        "origem": "Telefone",
+        "ticket_sis_ext": "",
+        "lote": {
+            "$date": 1588075937765
+        }
+    },
+    {
+        "_id": {
+            "$oid": "5ea84419883dd6ec3b97f463"
+        },
+        "numero": 3841016,
+        "resumo": "FAILED na aplicacao SAUDE_CONECTIVIDADE_CICLICO job DNET_70_IMPORTACAO_TRANSACOES_RETORNO_CONECTIVIDADE qualifier 0001 geracao 315995",
+        "severidade": 2,
+        "categoria": "Sistemas.Batch.Saude.Normal",
+        "status": "Fechado",
+        "grupo_executor": "EQUIPE TCS - TI SAUDE/ODONTO/PORTOMED/FSI",
+        "responsavel": "VITOR STELMASTCHUK SANTOS",
+        "violacao_projetada": null,
+        "violado": "Não",
+        "localidade": "DATACENTER - 3º",
+        "data_abertura": {
+            "$date": 1575479881000
+        },
+        "ultima_atualizacao": {
+            "$date": 1575556680000
+        },
+        "retorno_chamado": "",
+        "classificacao_final": "Incidente",
+        "data_resolucao": {
+            "$date": 1575556330000
+        },
+        "descricao": "Tipo de Desvio: FAILED   Aplicacao: SAUDE_CONECTIVIDADE_CICLICO   Jobname: DNET_70_IMPORTACAO_TRANSACOES_RETORNO_CONECTIVIDADE   Qualifier: 0001  Geracao: 315995   Servidor: NT1044   Data: 04/12/2019 17:11:30  -----------------------------------------------  Quantidade de eventos de no mes:       9 (criado a partir da solicitação 3840968)",
+        "usuario_final_afetado": "CAWA",
+        "departamento": "PSG - PRODUCAO TI",
+        "problema_vinculado": 3562597,
+        "incidente_pai": 3840968,
+        "causado_pela_rdm": null,
+        "origem": "PortoNet",
+        "ticket_sis_ext": "",
+        "lote": 0
+    }
+]
